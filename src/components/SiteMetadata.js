@@ -1,19 +1,115 @@
-import { graphql, useStaticQuery } from 'gatsby'
+import { graphql, useStaticQuery } from "gatsby";
 
-const useSiteMetadata = () => {
-  const { site } = useStaticQuery(
-    graphql`
-      query SITE_METADATA_QUERY {
-        site {
-          siteMetadata {
+const SiteMetaData = () => {
+  const {
+    site: { siteMetadata },
+    markdownRemark: { frontmatter },
+  } = useStaticQuery(graphql`
+    query SiteInfo {
+      site {
+        siteMetadata {
+          siteURL
+        }
+      }
+      markdownRemark(frontmatter: { templateKey: { eq: "site-data" } }) {
+        frontmatter {
+          title
+          youtube
+          twitter
+          facebook
+          disqus
+          number
+          dmca
+          dmcaLink
+          linkType
+          nofollow
+          noindex
+          sitemap
+          cookies {
+            enabled
+            message
+          }
+          colors {
+            background
+            blockBackground
+            headerBackground
+            textColor
+            btnBackground
+            btnHoverBackground
+            btnColor
+            navbarShadow
+            headerTextColor
+          }
+          ads {
+            enableAds
+            disabledPostsAds
+            adCodes {
+              afterToC
+              afterTitle
+              insideBody
+              sidebarSticky
+              beforeAuthor
+              stickyMobile
+            }
+          }
+          logoSmall {
+            base
+            childImageSharp {
+              original {
+                height
+                width
+              }
+            }
+          }
+          logoLarge {
+            base
+            childImageSharp {
+              original {
+                height
+                width
+              }
+            }
+          }
+          faviconSmall {
+            base
+            childImageSharp {
+              original {
+                height
+                width
+              }
+            }
+          }
+          faviconLarge {
+            base
+            childImageSharp {
+              original {
+                height
+                width
+              }
+            }
+          }
+          topNav {
             title
-            description
+            link
+            child {
+              title
+              link
+              child {
+                title
+                link
+              }
+            }
+          }
+          footerNav {
+            title
+            link
           }
         }
       }
-    `
-  )
-  return site.siteMetadata
-}
+    }
+  `);
 
-export default useSiteMetadata
+  return { ...siteMetadata, ...frontmatter };
+};
+
+export default SiteMetaData;
